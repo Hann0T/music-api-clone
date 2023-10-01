@@ -50,7 +50,7 @@ func (s *Server) GetAlbum(w http.ResponseWriter, r *http.Request) {
 	album, err := s.AlbumRepository.ReadAlbum(id)
 
 	if err != nil {
-        w.WriteHeader(http.StatusNotFound)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -65,6 +65,26 @@ func (s *Server) GetAlbum(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) GetAlbums(w http.ResponseWriter, r *http.Request) {
+	albums, err := s.AlbumRepository.ReadAlbums()
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if len(albums) <= 0 {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	resp, err := json.Marshal(albums)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(resp)
 }
 
 func (s *Server) GetArtist(w http.ResponseWriter, r *http.Request) {

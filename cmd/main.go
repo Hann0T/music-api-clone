@@ -26,7 +26,7 @@ func main() {
 
 	// api
 	r.Get("/album/{id}", server.GetAlbum)
-	r.Get("/album", server.GetAlbums)
+	r.Get("/albums", server.GetAlbums)
 	r.Get("/artist/{id}", server.GetArtist)
 	r.Get("/track/{id}", server.GetTrack)
 
