@@ -14,6 +14,7 @@ func main() {
 	server := handler.NewServer(
 		repositories.NewInMemoryAlbumRepository(),
 		repositories.NewInMemoryArtistRepository(),
+		repositories.NewInMemoryTrackRepository(),
 	)
 
 	r := chi.NewRouter()

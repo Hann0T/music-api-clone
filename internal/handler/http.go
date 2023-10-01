@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -12,12 +13,14 @@ import (
 type Server struct {
 	AlbumRepository  ports.AlbumRepository
 	ArtistRepository ports.ArtistRepository
+	TrackRepository  ports.TrackRepository
 }
 
-func NewServer(albumRepository ports.AlbumRepository, artistRepository ports.ArtistRepository) *Server {
+func NewServer(albumRepository ports.AlbumRepository, artistRepository ports.ArtistRepository, trackRepository ports.TrackRepository) *Server {
 	return &Server{
 		AlbumRepository:  albumRepository,
 		ArtistRepository: artistRepository,
+		TrackRepository:  trackRepository,
 	}
 }
 
@@ -58,6 +61,7 @@ func (s *Server) GetAlbum(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Println("Error trying to marshal the model, error: ", err)
 		return
 	}
 
@@ -81,6 +85,7 @@ func (s *Server) GetAlbums(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Println("Error trying to marshal the model, error: ", err)
 		return
 	}
 
@@ -113,6 +118,7 @@ func (s *Server) GetArtist(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Println("Error trying to marshal the model, error: ", err)
 		return
 	}
 
@@ -120,5 +126,35 @@ func (s *Server) GetArtist(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) GetTrack(w http.ResponseWriter, r *http.Request) {
+	trackID := chi.URLParam(r, "id")
 
+	if len(trackID) <= 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(trackID)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	track, err := s.TrackRepository.ReadTrack(id)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Println("Error trying to get the model, error: ", err)
+		return
+	}
+
+	data, err := json.Marshal(track)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Println("Error trying to marshal the model, error: ", err)
+		return
+	}
+
+	w.Write(data)
 }

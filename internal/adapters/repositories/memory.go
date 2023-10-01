@@ -42,11 +42,11 @@ type InMemoryArtistRepository struct {
 
 func NewInMemoryArtistRepository() *InMemoryArtistRepository {
 	return &InMemoryArtistRepository{
-        Artists: []*models.Artist{
-            models.NewArtist(1, "The voidz", "img", 10000),
-            models.NewArtist(2, "Korn", "img", 120409),
-        },
-    }
+		Artists: []*models.Artist{
+			models.NewArtist(1, "The voidz", "img", 10000),
+			models.NewArtist(2, "Korn", "img", 120409),
+		},
+	}
 }
 
 func (r *InMemoryArtistRepository) ReadArtist(id int) (*models.Artist, error) {
@@ -61,4 +61,35 @@ func (r *InMemoryArtistRepository) ReadArtist(id int) (*models.Artist, error) {
 
 func (r *InMemoryArtistRepository) ReadArtists() ([]*models.Artist, error) {
 	return r.Artists, nil
+}
+
+type InMemoryTrackRepository struct {
+	Tracks []*models.Track
+}
+
+func NewInMemoryTrackRepository() *InMemoryTrackRepository {
+	return &InMemoryTrackRepository{
+		Tracks: []*models.Track{
+			models.NewTrack(1, "Take Me In Your Army", 254, 12, 1),
+			models.NewTrack(2, "Human sadness", 1054, 5, 1),
+			models.NewTrack(3, "QYURRYUS", 314, 2, 2),
+			models.NewTrack(4, "Blind", 223, 1, 3),
+			models.NewTrack(5, "Twist", 131, 1, 4),
+			models.NewTrack(6, "Freak on a leash", 236, 4, 5),
+		},
+	}
+}
+
+func (r *InMemoryTrackRepository) ReadTrack(id int) (*models.Track, error) {
+	for _, track := range r.Tracks {
+		if track.AlbumID == id {
+			return track, nil
+		}
+	}
+
+	return &models.Track{}, errors.New("Track not found")
+}
+
+func (r *InMemoryTrackRepository) ReadTracks() ([]*models.Track, error) {
+	return r.Tracks, nil
 }
