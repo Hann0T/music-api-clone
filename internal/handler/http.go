@@ -88,7 +88,35 @@ func (s *Server) GetAlbums(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) GetArtist(w http.ResponseWriter, r *http.Request) {
+	artistID := chi.URLParam(r, "id")
 
+	if artistID == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(artistID)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	album, err := s.ArtistRepository.ReadArtist(id)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	resp, err := json.Marshal(album)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(resp)
 }
 
 func (s *Server) GetTrack(w http.ResponseWriter, r *http.Request) {
