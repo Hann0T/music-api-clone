@@ -13,8 +13,11 @@ type InMemoryAlbumRepository struct {
 func NewInMemoryAlbumRepository() *InMemoryAlbumRepository {
 	return &InMemoryAlbumRepository{
 		Albums: []*models.Album{
-			models.NewAlbum(1, "tyranny", "123", "asdf", 3),
-			models.NewAlbum(2, "virtue", "123", "asdf", 3),
+			models.NewAlbum(1, "Tyranny", "123", "img", 1),
+			models.NewAlbum(2, "Virtue", "124", "img", 1),
+			models.NewAlbum(3, "Korn", "125", "img", 2),
+			models.NewAlbum(4, "Life is peachy", "126", "img", 2),
+			models.NewAlbum(5, "Follow the leader", "127", "img", 2),
 		},
 	}
 }
@@ -38,7 +41,12 @@ type InMemoryArtistRepository struct {
 }
 
 func NewInMemoryArtistRepository() *InMemoryArtistRepository {
-	return &InMemoryArtistRepository{}
+	return &InMemoryArtistRepository{
+        Artists: []*models.Artist{
+            models.NewArtist(1, "The voidz", "img", 10000),
+            models.NewArtist(2, "Korn", "img", 120409),
+        },
+    }
 }
 
 func (r *InMemoryArtistRepository) ReadArtist(id int) (*models.Artist, error) {
