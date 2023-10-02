@@ -1,11 +1,11 @@
 package models
 
 type Album struct {
-	ID       int    `json:"id"`
-	Title    string `json:"title"`
-	UPC      string `json:"upc"`
-	Cover    string `json:"cover"`
-	ArtistID int    `json:"artist_id"`
+	ID       int
+	Title    string
+	UPC      string
+	Cover    string
+	ArtistID int
 }
 
 func NewAlbum(id int, title string, upc string, cover string, artistID int) *Album {
