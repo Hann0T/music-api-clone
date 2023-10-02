@@ -32,6 +32,17 @@ func (r *InMemoryAlbumRepository) ReadAlbum(id int) (*models.Album, error) {
 	return &models.Album{}, errors.New("Album not found")
 }
 
+func (r *InMemoryAlbumRepository) ReadAlbumsByArtist(artist *models.Artist) ([]*models.Album, error) {
+	var albums []*models.Album
+	for _, album := range r.Albums {
+		if album.ArtistID == artist.ID {
+			albums = append(albums, album)
+		}
+	}
+
+	return albums, nil
+}
+
 func (r *InMemoryAlbumRepository) ReadAlbums() ([]*models.Album, error) {
 	return r.Albums, nil
 }
@@ -92,4 +103,15 @@ func (r *InMemoryTrackRepository) ReadTrack(id int) (*models.Track, error) {
 
 func (r *InMemoryTrackRepository) ReadTracks() ([]*models.Track, error) {
 	return r.Tracks, nil
+}
+
+func (r *InMemoryTrackRepository) ReadTracksByAlbum(album *models.Album) ([]*models.Track, error) {
+	var tracks []*models.Track
+	for _, track := range r.Tracks {
+		if track.AlbumID == album.ID {
+			tracks = append(tracks, track)
+		}
+	}
+
+	return tracks, nil
 }
