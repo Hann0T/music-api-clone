@@ -19,6 +19,7 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	r.Use(handler.JsonHeader)
 
 	// auth
 	r.Post("/login", server.Login)
