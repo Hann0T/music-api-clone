@@ -6,17 +6,17 @@ import (
 )
 
 type ArtistPostgres struct {
-	db *sqlx.DB
+	DB *sqlx.DB
 }
 
-func NewArtistPostgresRepository(db *sqlx.DB) *ArtistPostgres {
-	return &ArtistPostgres{db}
+func NewArtistPostgresRepository(DB *sqlx.DB) *ArtistPostgres {
+	return &ArtistPostgres{DB}
 }
 
 func (r *ArtistPostgres) ReadArtist(id int) (*models.Artist, error) {
 	artist := models.Artist{}
 
-	err := r.db.Get(&artist, "select * from artists where id=$1", id)
+	err := r.DB.Get(&artist, "select * from artists where id=$1", id)
 	if err != nil {
 		return &artist, err
 	}
@@ -27,7 +27,7 @@ func (r *ArtistPostgres) ReadArtist(id int) (*models.Artist, error) {
 func (r *ArtistPostgres) ReadArtists() ([]*models.Artist, error) {
 	artists := []*models.Artist{}
 
-	err := r.db.Select(&artists, "select * from artists")
+	err := r.DB.Select(&artists, "select * from artists")
 	if err != nil {
 		return artists, err
 	}
